@@ -1,0 +1,92 @@
+USE QLSV;
+GO
+
+-- T?o b?ng Khoa
+CREATE TABLE Khoa (
+    MaKhoa NVARCHAR(50) PRIMARY KEY,
+    TenKhoa NVARCHAR(100)
+);
+GO
+
+-- T?o b?ng LopHoc
+CREATE TABLE LopHoc (
+    MaLop NVARCHAR(50) PRIMARY KEY,
+    TenLop NVARCHAR(100),
+    MaKhoa NVARCHAR(50),
+    FOREIGN KEY (MaKhoa) REFERENCES Khoa(MaKhoa)
+);
+GO
+
+-- T?o b?ng MonHoc
+CREATE TABLE MonHoc (
+    MaMonHoc NVARCHAR(50) PRIMARY KEY,
+    TenMonHoc NVARCHAR(100),
+    SoTinChi INT
+);
+GO
+
+-- T?o b?ng ThongTinSinhVien
+CREATE TABLE ThongTinSinhVien (
+    MaSinhVien INT PRIMARY KEY IDENTITY(1,1),
+    HoTen NVARCHAR(100),
+    GioiTinh NVARCHAR(10),
+    NgaySinh DATE,
+    DiaChi NVARCHAR(255),
+    MaLop NVARCHAR(50),
+    GPA FLOAT,
+    FOREIGN KEY (MaLop) REFERENCES LopHoc(MaLop)
+);
+GO
+
+-- T?o b?ng DangKyHocPhan
+CREATE TABLE DangKyHocPhan (
+    MaDangKy INT PRIMARY KEY IDENTITY(1,1),
+    MaSinhVien INT,
+    MaMonHoc NVARCHAR(50),
+    FOREIGN KEY (MaSinhVien) REFERENCES ThongTinSinhVien(MaSinhVien),
+    FOREIGN KEY (MaMonHoc) REFERENCES MonHoc(MaMonHoc)
+);
+
+
+-- Thêm dữ liệu vào bảng Khoa
+INSERT INTO Khoa (MaKhoa, TenKhoa) VALUES
+(N'CNTT', N'Công nghệ thông tin'),
+(N'QTKD', N'Quản trị kinh doanh'),
+(N'KT', N'Kế toán'),
+(N'NN', N'Ngôn ngữ Anh'),
+(N'CNTP', N'Công nghệ thực phẩm');
+
+-- Thêm dữ liệu vào bảng LopHoc
+INSERT INTO LopHoc (MaLop, TenLop, MaKhoa) VALUES
+(N'CNTT01', N'Lớp Công nghệ thông tin 01', N'CNTT'),
+(N'CNTT02', N'Lớp Công nghệ thông tin 02', N'CNTT'),
+(N'QTKD01', N'Lớp Quản trị kinh doanh 01', N'QTKD'),
+(N'KT01', N'Lớp Kế toán 01', N'KT'),
+(N'NN01', N'Lớp Ngôn ngữ Anh 01', N'NN');
+
+-- Thêm dữ liệu vào bảng MonHoc
+INSERT INTO MonHoc (MaMonHoc, TenMonHoc, SoTinChi) VALUES
+(N'CTDL', N'Cấu trúc dữ liệu', 3),
+(N'CSDL', N'Cơ sở dữ liệu', 3),
+(N'MAC', N'Mạng máy tính', 3),
+(N'TKWEB', N'Thiết kế Web', 2),
+(N'KT1', N'Kinh tế học đại cương', 2);
+
+-- Thêm dữ liệu vào bảng ThongTinSinhVien
+INSERT INTO ThongTinSinhVien (HoTen, GioiTinh, NgaySinh, DiaChi, MaLop, GPA) VALUES
+(N'Nguyễn Văn Sơn', N'Nam', '2002-01-15', N'Hà Nội', N'CNTT01', 3.2),
+(N'Trần Thị Bích', N'Nữ', '2003-03-22', N'Hải Phòng', N'CNTT02', 3.8),
+(N'Lê Văn Công', N'Nam', '2002-07-09', N'Nam Định', N'QTKD01', 2.9),
+(N'Phạm Thị Dung', N'Nữ', '2001-12-01', N'Ninh Bình', N'KT01', 3.5),
+(N'Hoàng Văn Hòa', N'Nam', '2003-05-18', N'Hưng Yên', N'NN01', 3.0);
+
+-- Thêm dữ liệu vào bảng DangKyHocPhan
+INSERT INTO DangKyHocPhan (MaSinhVien, MaMonHoc) VALUES
+(1, N'CTDL'),
+(1, N'CSDL'),
+(2, N'TKWEB'),
+(3, N'KT1'),
+(4, N'CSDL');
+
+
+select*from ThongTinSinhVien
